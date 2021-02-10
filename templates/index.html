@@ -1,17 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+<!--From https://codepen.io/frytyler/pen/EGdtg-->
+
 <head>
-    <meta charset="UTF-8">
-    <title>Chatbot</title>
+  <meta charset="UTF-8">
+  <title>ML API</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script>
+    let loader, questionContainer, answerContainer;
+    let p_answer;
+
+    async function postData(url = '', data = {}) {
+      // Default options are marked with *
+      const response = await fetch(url, {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+          'Content-Type': 'application/json'
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: JSON.stringify(data) // body data type must match "Content-Type" header
+      });
+      return response.json(); // parses JSON response into native JavaScript objects
+    }
+
+    function call() {
+      loader.style.display = "block"
+      questionContainer.style.display = "none";
+
+      postData('http://127.0.0.1:5000/predict', { answer: 42 })
+        .then(data => {
+          console.log(data); // JSON data parsed by `data.json()` call
+          loader.style.display = "none";
+          answerContainer.style.display = "block";
+          p_answer.innerHTML = data;
+        });
+    }
+
+    window.onload = () => {
+      loader = document.getElementById('loader');
+      questionContainer = document.getElementById("question_container");
+      answerContainer = document.getElementById('answer_container');
+      p_answer = document.getElementById("answer");
+
+      let btn = document.getElementById("btn-go");
+      btn.onclick = (e) => {
+        call();
+      };
+    }
+
+
+  </script>
+  <style>
+    #loader {
+      position: absolute;
+      margin: auto;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: #fff;
+      display: none;
+    }
+  </style>
 </head>
+
 <body>
-<form method="post">
-    <input type="text" name="query" placeholder="enter Question here"/>
-    <input type="submit" value="Submit"/>
-<p>
-    Answer : {{prediction[0]}}<br>
-    accuracy : {{prediction[3]}}<br>
-</p>
-</form>
+  <div id='loader' style="display:none">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif">
+  </div>
+  <div class="login" id="question_container">
+    <h1>Enter question here</h1>
+
+    <!-- Main Input For Receiving Query to our ML -->
+    <input type="text" name="query" placeholder="What's is your question ?" required="required" />
+
+
+    <button type="submit" id="btn-go" class="btn btn-primary btn-block btn-large">Enter</button>
+
+    <br>
+    <br>
+
+  </div>
+
+  <div id="answer_container" style="display: none;">
+
+    <p id="answer"></p>
+
+
+  </div>
+
+
 </body>
+
 </html>

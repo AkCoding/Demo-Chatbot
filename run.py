@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, make_response, jsonify
 import pickle
 
 app = Flask(__name__)
@@ -8,12 +8,11 @@ def init():
     model = pickle.load(open('model.pkl', 'rb'))
 
 @app.route('/', methods =['GET'])
-def predict():
-    if request.methof
-    prediction = ""
-    return render_template('index.html', prediction=prediction)
+def home():
+    if request.method == 'GET':
+        return render_template('index.html')
 
-@app.route('/', methods =['POST'])
+@app.route('/predict', methods =['POST'])
 def predict():
     # model = pickle.load(open('model.pkl', 'rb'))
     if request.method == 'POST':
@@ -22,9 +21,13 @@ def predict():
         prediction = model.predict(user_input)
     else:
         prediction = ""
-
-    return render_template('index.html', prediction=prediction)
-
+    return make_response({
+        "error": False,
+        "data": {
+            'Accuracy': prediction[3],
+            'Answer': prediction[0]
+        }
+    }, 200)
 
 if __name__ == '__main__':
     init()
