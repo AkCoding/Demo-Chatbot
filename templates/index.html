@@ -13,6 +13,7 @@
   <script>
     let loader, questionContainer, answerContainer;
     let p_answer;
+    let p_accuracy;
 
     async function postData(url = '', data = {}) {
       // Default options are marked with *
@@ -41,7 +42,8 @@
           console.log(data); // JSON data parsed by `data.json()` call
           loader.style.display = "none";
           answerContainer.style.display = "block";
-          p_answer.innerHTML = data;
+          p_answer.innerHTML = data['data']['Answer'];
+          p_answer.innerHTML = data['data']['Accuracy'];
         });
     }
 
@@ -95,7 +97,8 @@
 
   <div id="answer_container" style="display: none;">
 
-    <p id="answer"></p>
+    <p id="answer">answer</p>
+    <p id="accuracy">accuracy</p>
 
 
   </div>
