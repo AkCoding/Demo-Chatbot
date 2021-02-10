@@ -43,7 +43,9 @@
           loader.style.display = "none";
           answerContainer.style.display = "block";
           p_answer.innerHTML = data['data']['Answer'];
-          p_answer.innerHTML = data['data']['Accuracy'];
+          p_accuracy.innerHTML = data['data']['Accuracy'];
+          p_answer.style.fontFamily = "Impact,Charcoal,sans-serif";
+          p_accuracy.style.fontFamily = "Impact,Charcoal,sans-serif";
         });
     }
 
@@ -52,6 +54,7 @@
       questionContainer = document.getElementById("question_container");
       answerContainer = document.getElementById('answer_container');
       p_answer = document.getElementById("answer");
+      p_accuracy  = document.getElementById("accuracy");
 
       let btn = document.getElementById("btn-go");
       btn.onclick = (e) => {
@@ -74,6 +77,7 @@
       background: #fff;
       display: none;
     }
+
   </style>
 </head>
 
