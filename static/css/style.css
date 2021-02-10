@@ -16,8 +16,8 @@ html { width: 100%; height:100%; overflow:hidden; }
 #loader{
     width: 100%;
     height: 100vh;
+    text-align:center;
     background : #fff
-    url("https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif")
 }
 
 
@@ -41,6 +41,7 @@ body {
 }
 .login { 
 	position: absolute;
+	text-align:center;
 	top: 40%;
 	left: 50%;
 	margin: -150px 0 0 -150px;
